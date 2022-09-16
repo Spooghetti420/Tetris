@@ -107,7 +107,7 @@ export class GameWindow {
                 } else if (bound_actions[k][0] == "rotate") {
                     this.activePiece.rotate(bound_actions[k][1], this.grid);
                 }
-                if (keys[k].should_reset)
+                if (keys[k].shouldReset)
                     keys[k].state = false;
             }
         }
