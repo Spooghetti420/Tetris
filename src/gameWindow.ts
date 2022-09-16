@@ -22,7 +22,6 @@ function randomPiece(): Tetronimo {
 
 export class GameWindow {
     private active: boolean
-    private running: boolean
     private flags: object
     private activePiece: Tetronimo
     private timer: number
@@ -41,7 +40,6 @@ export class GameWindow {
         this.scaleVec = [1/19*resolution[0],1/19*resolution[1]];
         this.grid = new Grid([1,1], [10,15], [190,220,240], flags);
         this.bgColor = [200, 230, 255];
-        this.running = true;
 
         this.score = 0;
         this.scoreboard = new TextLabel([200,200,220], this.score.toString(), [255, 0, 0], [300, 50, 150, 25], true);
