@@ -1,13 +1,17 @@
-class Label {
-    // shared properties for any Label
-    constructor(bgColor, Text, Rect, visible=true) {
+export abstract class Label {
+  // shared properties for any Label
+  text: string
+  bgColor: [number, number, number]
+  rect: [number, number, number, number]
+  visible: boolean
+  constructor(bgColor, Text, Rect, visible=true) {
       this.text = Text;
       this.bgColor = bgColor;
       this.rect = Rect;
       this.visible = visible;
     }
     
-    render(surface) {
+    render() {
       if (this.visible) {
           fill(...this.bgColor);
           rect(...this.rect);
@@ -15,21 +19,23 @@ class Label {
           textSize(this.rect[3]/2);
           textAlign(CENTER);
           text(this.text, this.rect[0] + this.rect[2]/2, this.rect[1] + this.rect[3]/2 + 5);
-          // image(this.texture, this.rect[0], this.rect[1]);
       }
     }
 }
 
-class TextLabel extends Label {
-    constructor(bgColor, Text, text_color, Rect, visible=true) {
+export class TextLabel extends Label {
+    constructor(bgColor, Text, textColor, Rect, visible=true) {
       super(bgColor, Text, Rect, visible);
     }
-    changeText(text_color, Text) {
+    changeText(textColor, Text) {
       this.text = Text;
     }
 }
 
-class Button extends Label {
+export class Button extends Label {
+  toggleable: boolean
+  state: boolean
+
     constructor(bgColor, Text, Rect, visible=true, toggleable=false) {
         super(bgColor, Text, Rect, visible);
         this.toggleable = toggleable;
@@ -38,10 +44,9 @@ class Button extends Label {
 
     check(mousePos) {
         let [x, y, w, h] = this.rect;
-        if (!this.visible) {
+        if (!this.visible)
+          return false;
 
-            return false;
-        }
         if ((x <= mousePos[0] && mousePos[0] <= x+w) && (y <= mousePos[1] && mousePos[1] <= y+h)) {
             if (this.toggleable) {
                 this.state = !this.state;
@@ -53,7 +58,7 @@ class Button extends Label {
     }
 }
   
-class TextButton extends Button {
+export class TextButton extends Button {
     constructor(Rect, bgColor, text_color, Text, visible=true, toggleable=false) {
       super(bgColor, Text, Rect, visible, toggleable);
     }
@@ -61,6 +66,3 @@ class TextButton extends Button {
       this.text = Text;
     }
 }
-
-
-

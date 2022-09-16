@@ -1,35 +1,54 @@
+// import { Menu_music, Gameplay_music, Game_over, Wall_hit, Line_cleared, hard_drop, Tetris_image } from "./assets";
+import { SoundFile, Image } from "p5";
+import { GameWindow } from "./gameWindow.js";
+import { Menu } from "./menu.js";
+
+interface p5Window extends Window 
+{
+    preload: CallableFunction,
+    setup: CallableFunction,
+    draw: CallableFunction,
+    keyPressed: CallableFunction,
+    mousePressed: CallableFunction,
+    keyReleased: CallableFunction
+}
+// Using p5.js to manage the canvas, etc.
+declare let window: p5Window;
+
 class KeyState {
-    constructor(state, should_reset) {
-      this.state = state;
-      this.should_reset = should_reset;
-    }
+  state: boolean
+  shouldReset: boolean
+
+  constructor(state: boolean, shouldReset: boolean) {
+    this.state = state;
+    this.shouldReset = shouldReset;
+  }
 }
   
 // game is designed for a square window
 
 // runtime variables
-const resolution = [500,500]
-let screen;
+const resolution = [500, 500] as [number, number];
+let canvas;
 
 const flags = {
-    "gameOver": false,
-    "lineClear": false,
-    "tetris": false,
-    "wallHit": false,
-    "hardDrop": false
+  "gameOver": false,
+  "lineClear": false,
+  "tetris": false,
+  "wallHit": false,
+  "hardDrop": false
 }
 
-let time_elapsed = 0;
+let timeElapsed = 0;
 let running = false; // Start as false  to prevent mouse callback from glitching
 let endTime;
 
 // Visuals
-let Tetris_image;
-
+export let Tetris_image: Image;
 // Music and sfx
-let Menu_music, Gameplay_music, Game_over, Wall_hit, Line_cleared, hard_drop;
+export let Menu_music: SoundFile, Gameplay_music: SoundFile, Game_over: SoundFile, Wall_hit: SoundFile, Line_cleared: SoundFile, hard_drop: SoundFile;
 
-function preload() {
+window.preload = function() {
   Menu_music = loadSound("Assets/Music/Menu_music.wav");
   Gameplay_music = loadSound("Assets/Music/Gameplay_music.wav");
   Game_over = loadSound("Assets/Music/Game_over.wav");
@@ -41,8 +60,8 @@ function preload() {
 
 }
 
-function setup() {
-  screen = createCanvas(...resolution);
+window.setup = function() {
+  canvas = createCanvas(...resolution);
   frameRate(15);
   game = new GameWindow(resolution, flags);
   menu = new Menu();
@@ -55,7 +74,7 @@ function setup() {
 let game;
 let menu;
 
-// // inputs Format .active, .should_reset
+// // inputs Format .active, .shouldReset
 const keys = {
     [37]: new KeyState(false, false), // left
     [39]: new KeyState(false, false), // right
@@ -66,10 +85,10 @@ const keys = {
 }
 
 // mainloop
-function draw() {
+window.draw = function() {
   if (!running) {
     if (Date.now() - endTime > 2000) {
-      background(0)
+      background(0);
       noLoop();
       return;
     } else {
@@ -81,16 +100,16 @@ function draw() {
     const time_start = Date.now();
 
     // rendering
-    menu.render(screen);
-    game.render(screen);
+    menu.render(canvas);
+    game.render(canvas);
 
     // events and flags
-    game.update(time_elapsed);
+    game.update(timeElapsed);
     game.userInput(keys);
 
     if (flags["gameOver"]) {
         flags["gameOver"] = false;
-        game.render(screen);
+        game.render(canvas);
         Gameplay_music.stop();
         Game_over.play();
         game.active = false;
@@ -112,25 +131,25 @@ function draw() {
         hard_drop.play();
     }
 
-    time_end = Date.now();
-    time_elapsed = time_end-time_start;
+    endTime = Date.now();
+    timeElapsed = endTime-time_start;
 }
 
-function keyPressed() {
+window.keyPressed = function() {
   if (!keys.hasOwnProperty(keyCode)) {
     return;
   }
   keys[keyCode].state = true;
 }
 
-function keyReleased() {
+window.keyReleased = function() {
   if (!keys.hasOwnProperty(keyCode)) {
     return;
   }
   keys[keyCode].state = false;
 }
 
-function mousePressed() {
+window.mousePressed = function() {
     if (!running) {
       return
     }
