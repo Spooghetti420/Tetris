@@ -19,8 +19,8 @@ class KeyState {
   state: boolean
   shouldReset: boolean
 
-  constructor(state: boolean, shouldReset: boolean) {
-    this.state = state;
+  constructor(shouldReset: boolean = false) {
+    this.state = false;
     this.shouldReset = shouldReset;
   }
 }
@@ -74,17 +74,17 @@ window.setup = function() {
 let game;
 let menu;
 
-// // inputs Format .active, .shouldReset
+// inputs              shouldReset parameter is passed as `true` if the key should not act multiple times when held
 const keys = {
-    [37]: new KeyState(false, false), // left
-    [39]: new KeyState(false, false), // right
-    [40]: new KeyState(false, false), // down
-    [32]: new KeyState(false, true), // space
-    [68]: new KeyState(false, true), // d
-    [65]: new KeyState(false, true) // a
+    [37]: new KeyState(), // left
+    [39]: new KeyState(), // right
+    [40]: new KeyState(), // down
+    [32]: new KeyState(true), // space
+    [68]: new KeyState(true), // d
+    [65]: new KeyState(true) // a
 }
 
-// mainloop
+// main loop
 window.draw = function() {
   if (!running) {
     if (Date.now() - endTime > 2000) {
