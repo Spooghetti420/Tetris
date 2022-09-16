@@ -3,7 +3,6 @@
       "allowJs": true,
       "target": "ES2015",
       "types": ["p5/global"],
-      "noEmit": false,
       "outDir": "dist"
     },
     "include": ["src/**/*.ts"],
