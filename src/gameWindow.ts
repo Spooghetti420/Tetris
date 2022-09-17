@@ -2,6 +2,7 @@ import { Piece } from "./piece.js";
 import { Tetronimo } from "./tetromino.js";
 import { Grid } from "./grid.js";
 import { TextLabel } from "./ui.js"
+import { Language, LanguageName } from "./i18n.js";
 
 
 function randomItem<T>(array: T[]): T {
@@ -21,7 +22,7 @@ function randomPiece(): Tetronimo {
 }
 
 export class GameWindow {
-    private active: boolean
+    public active: boolean
     private flags: object
     private activePiece: Tetronimo
     private timer: number
@@ -113,13 +114,13 @@ export class GameWindow {
         }
     }
 
-    render(screen) {
+    render(language) {
         if (!this.active)
             return;
 
-        screen.background(this.bgColor);
+        background(this.bgColor);
         this.grid.render(this.scaleVec);
-        this.activePiece.render(screen, this.scaleVec);
-        this.scoreboard.render();
+        this.activePiece.render(this.scaleVec);
+        this.scoreboard.render(language);
     }
 }

@@ -1,3 +1,4 @@
+import { LocalisableString } from "./i18n.js"
 import { Tetris_image } from "./main.js"
 import { TextButton } from "./ui.js"
 
@@ -14,9 +15,9 @@ export class Menu {
         this.bgColor = [200, 230, 255];
         this.tImage = Tetris_image;
        
-        const playButton    = new TextButton([100, 275, 300, 50], [200, 200, 220], [55, 55, 55], "Play Game", true, false);
-        const optionsButton = new TextButton([100, 350, 300, 50], [200, 200, 220], [55, 55, 55], "Options", true, false);
-        const exitButton    = new TextButton([175, 425, 150, 50], [200, 200, 220], [55, 55, 55], 'Exit', true, false);
+        const playButton    = new TextButton([100, 275, 300, 50], [200, 200, 220], [55, 55, 55], new LocalisableString("play_game"), true, false);
+        const optionsButton = new TextButton([100, 350, 300, 50], [200, 200, 220], [55, 55, 55], new LocalisableString("options"), true, false);
+        const exitButton    = new TextButton([175, 425, 150, 50], [200, 200, 220], [55, 55, 55], new LocalisableString("exit"), true, false);
 
         this.buttonDict = {
             play: playButton,
@@ -40,14 +41,14 @@ export class Menu {
         return buttons;
     }
 
-    render(screen) {
+    render(language) {
       if (!this.active)
         return;
 
-      screen.background(...this.bgColor);
+      background(...this.bgColor);
       image(Tetris_image, 178, 50);
       for (const name in this.buttonDict) {
-        this.buttonDict[name].render(screen);
+        this.buttonDict[name].render(language);
       }
     }
   

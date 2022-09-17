@@ -1,5 +1,6 @@
 import { SoundFile, Image } from "p5";
 import { GameWindow } from "./gameWindow.js";
+import { Language, LanguageName, loadLanguages } from "./i18n.js";
 import { Menu } from "./menu.js";
 
 interface p5Window extends Window 
@@ -56,7 +57,7 @@ window.preload = function() {
   hard_drop = loadSound("assets/Music/Hard_drop.wav");
   
   Tetris_image = loadImage('assets/Images/Tetris_image.png');
-
+  loadLanguages();
 }
 
 window.setup = function() {
@@ -70,8 +71,10 @@ window.setup = function() {
 }
 
 // UI elements
-let game;
-let menu;
+let game: GameWindow;
+let menu: Menu;
+let language = new Language(LanguageName.Japanese);
+
 
 // inputs              shouldReset parameter is passed as `true` if the key should not act multiple times when held
 const keys = {
@@ -99,8 +102,8 @@ window.draw = function() {
     const time_start = Date.now();
 
     // rendering
-    menu.render(canvas);
-    game.render(canvas);
+    menu.render(language);
+    game.render(language);
 
     // events and flags
     game.update(timeElapsed);

@@ -71,19 +71,19 @@ export class Tetronimo {
         }
     }
 
-    render(surface, scale: [number, number]) {
+    render(scale: [number, number]) {
         const pos = this.position;
         for (const tile of this.tiles) {
           fill(...this.color);
-          surface.rect([(pos[0]+tile[0])*scale[0],
+          rect((pos[0]+tile[0])*scale[0],
                           (pos[1]+tile[1])*scale[1], 
                           scale[0],
-                          scale[1]]);
+                          scale[1]);
 
-          surface.rect([(pos[0]+tile[0])*scale[0],
+          rect((pos[0]+tile[0])*scale[0],
                           (pos[1]+tile[1])*scale[1], 
                           scale[0],
-                          scale[1]]);
+                          scale[1]);
         }
     }
 }

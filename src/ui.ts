@@ -1,6 +1,8 @@
+import { Language, LocalisableString } from "./i18n.js";
+
 export abstract class Label {
   // shared properties for any Label
-  text: string
+  text: LocalisableString | string
   bgColor: [number, number, number]
   rect: [number, number, number, number]
   visible: boolean
@@ -11,14 +13,18 @@ export abstract class Label {
       this.visible = visible;
     }
     
-    render() {
+    render(language: Language) {
       if (this.visible) {
           fill(...this.bgColor);
           rect(...this.rect);
           fill(0);
           textSize(this.rect[3]/2);
           textAlign(CENTER);
-          text(this.text, this.rect[0] + this.rect[2]/2, this.rect[1] + this.rect[3]/2 + 5);
+          if (this.text instanceof LocalisableString) {
+            text(this.text.getLocalisedString(language), this.rect[0] + this.rect[2]/2, this.rect[1] + this.rect[3]/2 + 5);
+          } else {
+            text(this.text, this.rect[0] + this.rect[2]/2, this.rect[1] + this.rect[3]/2 + 5);
+          }
       }
     }
 }
@@ -36,7 +42,7 @@ export class Button extends Label {
   toggleable: boolean
   state: boolean
 
-    constructor(bgColor, Text, Rect, visible=true, toggleable=false) {
+  constructor(bgColor, Text, Rect, visible=true, toggleable=false) {
         super(bgColor, Text, Rect, visible);
         this.toggleable = toggleable;
         this.state = false;
